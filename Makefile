@@ -1,7 +1,7 @@
 ROOT_DIR:="$(dir $(realpath $(lastword $(MAKEFILE_LIST))))"
 DUNE=dune
 
-.PHONY: all test doc install uninstall clean
+.PHONY: all test doc install uninstall clean example
 
 all:
 	$(DUNE) build
@@ -11,6 +11,9 @@ all:
 
 test: tests/dune
 	$(DUNE) build @tests/runtest
+
+example:
+	$(DUNE) build example/advanced.exe example/simple.exe example/bench.exe
 
 doc:
 	$(DUNE) build @doc

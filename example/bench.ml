@@ -1,9 +1,8 @@
-open Jg_types
-open Jg_utils
+open Jingoo
 
 let file = ref "cheatsheet.jingoo"
 let count = ref 1000
-  
+
 let () =
   Arg.parse [
     ("-tmpl", Arg.String (fun f -> file := f), "template name");
@@ -11,12 +10,12 @@ let () =
   ] ignore "";
 
   let template = Jg_utils.read_file_as_string !file in
-  let output () = 
+  let output () =
     ignore @@ Jg_template.from_string ~models:Test_data.models template in
 
   let t0 = Unix.gettimeofday () in
   for i = 1 to 5 do
-    for j = 1 to (!count / 5) do
+    for _ = 1 to (!count / 5) do
       output ()
     done;
     Printf.printf "%d/5 done\n%!" i

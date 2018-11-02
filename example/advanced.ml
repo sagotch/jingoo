@@ -1,3 +1,4 @@
+open Jingoo
 open Jg_types
 
 let spf = Printf.sprintf
@@ -5,7 +6,7 @@ let compiled = ref false
 let file = ref "cheatsheet.jingoo"
 
 (* define custom filter to_gmail *)
-let to_gmail ?(kwargs=[]) value =
+let to_gmail ?kwargs:_ value =
   let id = Jg_runtime.string_of_tvalue value in
   Tstr (spf "%s@gmail.com" id)
 
@@ -26,8 +27,8 @@ let () =
 
       (* add own filter *)
       filters = [
-	("to_gmail", Jg_runtime.func_arg1 to_gmail);
-	("to_mail", Jg_runtime.func_arg1 (to_mail ~defaults:[
+	("to_gmail", func_arg1 to_gmail);
+	("to_mail", func_arg1 (to_mail ~defaults:[
           ("domain", Tstr "gmail.com");
         ]));
       ];
@@ -38,7 +39,7 @@ let () =
       ];
     } in
 
-  let result_string = 
+  let result_string =
     Jg_template.from_file !file ~env ~models:Test_data.models in
 
   print_endline result_string
