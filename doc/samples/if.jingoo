@@ -1,0 +1,9 @@
+{%- if hoge == "foo" -%}
+<p>hoge == "foo"</p>
+{%- elseif hoge == "bar" -%}
+  <p>hoge == "bar"</p>
+{%- elif hoge == "baz" -%}
+<p>hoge == "baz"</p>
+{%- else -%}
+<p>But... What is hoge?</p>
+{%- endif %}

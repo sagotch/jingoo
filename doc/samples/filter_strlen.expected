@@ -1,0 +1,6 @@
+<dl>
+  <dd>strlen("hogehoge")</dd>
+  <dt>8</dt>
+  <dt>strlen("日本語")</dt>
+  <dd>3</dd>
+</dl>

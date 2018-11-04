@@ -1,0 +1,6 @@
+{% with foo = 10, hoge = 20 -%}
+<dl>
+  <dt>foo</dt><dd>{{ foo }}</dd>
+  <dt>hoge</dt><dd>{{ hoge }}</dd>
+</dl>
+{%- endwith %}

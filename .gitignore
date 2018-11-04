@@ -7,3 +7,4 @@ example/bench
 example/advanced
 tests/.merlin
 tests/dune
+doc/dune

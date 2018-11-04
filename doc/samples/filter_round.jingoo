@@ -1,0 +1,6 @@
+<dl>
+  <dt>1.5 | round ("floor")</dt>
+  <dd>{{ 1.5 | round ("floor") }}</dd>
+  <dt>1.5 | round ("ceil")</dt>
+  <dd>{{ 1.5 | round("ceil") }}</dd>
+</dl>

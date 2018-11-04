@@ -1,0 +1,6 @@
+<dl>
+  <dd>strlen("hogehoge")</dd>
+  <dt>{{ strlen("hogehoge") }}</dt>
+  <dt>strlen("日本語")</dt>
+  <dd>{{ strlen("日本語") }}</dd>
+</dl>

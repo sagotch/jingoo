@@ -1,0 +1,198 @@
+{% set highlight = jg_highlight.highlight %}
+
+{%- macro input (class, id, checked) -%}
+  <input type="radio" class="tab-input tab-input-{{ class }}" id="{{ id }}" name="nav-tab" {% if checked %}checked{% endif %}>
+{%- endmacro -%}
+
+{%- macro label (class, id, label) -%}
+  <label for="{{ id }}" class="tab-label tab-label-{{ class }}">{{ label }}</label>
+{%- endmacro -%}
+
+{%- macro template (name, json) %}
+  <form class="demo">
+    {% if json %}{{ input ('json', 'json-' + name) }}{% endif %}
+    {{ input ('jingoo', 'jingoo-' + name, true) }}
+    {{ input ('result', 'result-' + name) }}
+    <div class="tabs">
+      {% if json %}{{ label ('json', 'json-' + name, 'JSON') }}{% endif %}
+      {{ label ('jingoo', 'jingoo-' + name, 'JINGOO') }}
+      {{ label ('result', 'result-' + name, 'RESULT') }}
+    </div>
+    <div class="tab-content">
+      {% if json %}<pre class="tab-pane tab-json demo-textarea">{{ eval("{% rawinclude '" + name + ".json' %}") }}</pre>{% endif %}
+      <pre class="tab-pane tab-jingoo demo-textarea">{{ highlight ( escape (eval("{% rawinclude '" + name + ".jingoo' %}") ) ) | safe }}</pre>
+      <pre class="tab-pane tab-result">{{ eval("{% rawinclude '" + name + ".expected' %}") }}</pre>
+    </div>
+  </form>
+{%- endmacro -%}
+
+{%- macro section (title, name, json) -%}
+  <div class="section">
+    <p class="section-title" id="name">{{ breadcrumb (title) }}</p>
+    <div class="section-content">
+      {{ caller () }}
+      {{ template (name, json) }}
+    </div>
+  </div>
+{%- endmacro -%}
+
+{%- macro breadcrumb (path) -%}
+  <ul class="breadcrumb">{%- for x in path -%}<li>{{ x }}</li>{%- endfor -%}</ul>
+{%- endmacro -%}
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jingoo - Template designer documentation</title>
+    <link rel="stylesheet" href="jingoo.css">
+  </head>
+  <body>
+
+    <div class="container">
+
+      <p class="title">Statements</p>
+
+      {% call section ([ 'Statements', 'Autoescape' ], 'autoescape', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'For' ], 'for', true) %}
+        {% block block_for %}
+          <p class="p">Loop over each item in a sequence.</p>
+          <p class="p">Inside of a for-loop block, you can access some special variables:</p>
+          <dl class="dl">
+            {% for x in
+              [ [ 'loop.index', 'The current iteration of the loop. (1 indexed)' ]
+              , [ 'loop.index0', 'The current iteration of the loop. (0 indexed)' ]
+              , [ 'loop.revindex', 'The number of iterations from the end of the loop (1 indexed)' ]
+              , [ 'loop.revindex0', 'The number of iterations from the end of the loop (0 indexed)' ]
+              , [ 'loop.first', 'True if first iteration.' ]
+              , [ 'loop.last', 'True if last iteration.' ]
+              , [ 'loop.length', 'The number of items in the sequence.' ]
+              , [ 'loop.cycle', 'A helper function to cycle between a list of sequences.' ]
+              ] %}
+              <dt class="dt">{{ x[0] }}</dt><dd class="dd">{{ x[1] }}</dd>
+            {% endfor %}
+ 	  </dl>
+        {% endblock %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'macro' ], 'macro', false) %}
+        {% block block_macro %}
+          <p class="p">Macro are useful to put often used idioms into reusable component.</p>
+        {% endblock %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'function' ], 'function', false) %}
+        {% block block_macro %}
+          <p class="p">Function can be seen as macros that return a value instead of printing it.</p>
+        {% endblock %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'if' ], 'if', true) %}
+        {% block block_if %}
+          <p class="p">
+            The if statement allows us to check if an expression is true or false,
+            and execute different code according to the result.
+          </p>
+          <p>
+            <code>0</code>, <code>null</code>, <code>''</code>, <code>""</code>, <code>[]</code>,
+            or <code>{}</code> are considered as <code>false</code> when used in a <code>if</code>/<code>elif</code> test.
+            The rest is <code>true</code>.
+          <p>
+        {% endblock %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'Keywords', 'in' ], 'in', false) %}
+      {% endcall %}
+
+      <p class="title">Tests</p>
+      <p class="subtitle">Tests are just functions that return a boolean.</p>
+
+      {% call section ([ 'Tests', 'The IS keyword' ], 'is', false) %}
+        <p class="p">
+          Tests can be used with the standard function call syntax,
+          but also with the <code>is</code> keyword in statements or expressions.
+        </p>
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'Objects properties' ], 'obj-property', true) %}
+      {% endcall %}
+
+
+      {% call section ([ 'Statements', 'Raw' ], 'raw', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'Variable assignment' ], 'set', false) %}
+        {% block block_set %}
+          <p class="p">
+            All blocks introduce a new scope when assigning variables. You can read a variable
+            defined in a parent block, but you can not assign a new value to this variable.
+            A new variable will be created for each assignment. It will shadow the old definition,
+            but as soon as you will leave the block, the old definition
+          </p>
+          <p class="p">
+            The only exception to that rule are <code>if</code> statements which do not introduce a scope.
+          </p>
+          <p class="p">
+            See <a href="#namespace">Namespace</a> for variable assignement propagating across scopes.
+          </p>
+        {% endblock %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'Variable assignment', 'Namespace' ], 'namespace', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'Whitespace control' ], 'whitespace-control', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'With' ], 'with', false) %}
+      {% endcall %}
+
+      <p class="title">Operators</p>
+
+      {% call section ([ 'Statements', 'Boolean operators' ], 'and-or', true) %}
+        {% block and_or %}
+          <p class="p">
+            Evaluation of boolean operators is sequential, left-to-right.
+          </p>
+          <p class="p">
+            In <code>e1 && e2</code>,
+            <code>e1</code> is evaluated first, and if it returns <code>false</code>, <code>e2</code>
+            is not evaluated at all.
+          </p>
+          <p class="p">
+            In <code>e1 || e2</code>,
+            <code>e1</code> is evaluated first, and if it returns <code>true</code>, <code>e2</code>
+            is not evaluated at all.
+          </p>
+        {% endblock %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'Basic operators' ], 'operators', false) %}
+      {% endcall %}
+
+      <p class="title">Tests</p>
+
+      {% call section ([ 'Statements', 'eval' ], 'filter_eval', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'groupby' ], 'filter_groupby', true) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'join' ], 'filter_join', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'range' ], 'filter_range', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'round' ], 'filter_round', false) %}
+      {% endcall %}
+
+      {% call section ([ 'Statements', 'strlen' ], 'filter_strlen', false) %}
+      {% endcall %}
+
+    </div>
+
+  </body>
+</html>

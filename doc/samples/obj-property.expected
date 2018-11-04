@@ -1,0 +1,6 @@
+<dl>
+  <dt>person.name</dt><dd>alice</dd>
+  <dt>person.age</dt><dd>42</dd>
+  <dt>person["name"]</dt><dd>alice</dd>
+  <dt>person["age"]</dt><dd>42</dd>
+</dl>

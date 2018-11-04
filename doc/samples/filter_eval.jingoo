@@ -1,0 +1,9 @@
+{% set x1 = "{% set msg = 'Hello, world!' %}{% set src = 'From eval!' %}{{ msg }} {{ src }}" -%}
+{% set x2 = "{% set msg = 'Hello, world!' %}{% set src = 'From eval!' %}{{ msg + ' ' + src }}" -%}
+{% set x3 = "{% set msg = 'Hello, world!' %}{{ msg }} " -%}
+
+<p>As in OCaml, only the last expression is returned.</p>
+<p>{{ eval(x1) }}</p>
+<p>{{ eval(x2) }}</p>
+<p>As a consequence, you must be careful with trailing whitespaces.</p>
+<p>{{ eval(x3) }}</p>

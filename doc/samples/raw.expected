@@ -1,0 +1,2 @@
+<p>This is raw, not expanded: {{ hoge }}</p>
+<p>This is raw, not a for loop: {% for x in long_list %}{{x}}{% endfor %}</p>

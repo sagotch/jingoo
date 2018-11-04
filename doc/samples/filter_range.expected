@@ -1,0 +1,8 @@
+<dl>
+  <dt>range(0,3)</dt>
+  <dd>0123</dd>
+  <dt>range(3,0)</dt>
+  <dd>3210</dd>
+  <dt>range("a","e")</dt>
+  <dd>abcde</dd>
+</dl>

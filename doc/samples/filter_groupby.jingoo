@@ -1,0 +1,9 @@
+<ul>
+  {%- for g in persons | groupby (attribute='sex', null) | sort (attribute='grouper') -%}
+    <li>Gender: {{ g.grouper }}<ul>
+        {%- for p in g.list | sort (attribute='name') -%}
+          <li>{{ p.name }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endfor -%}
+</ul>

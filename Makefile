@@ -7,13 +7,13 @@ all:
 	$(DUNE) build
 
 %dune: %dune.in
-	sed -e "s|%%%OUNIT_TESTDATA_DIR%%%|$(ROOT_DIR)tests/data|g" $< > $@
+	sed -e "s|%%%ROOT_DIR%%%|$(ROOT_DIR)|g" $< > $@
 
-test: tests/dune
-	$(DUNE) build @tests/runtest
+test: tests/dune doc/dune
+	$(DUNE) build @tests/runtest @doc/runtest
 
-doc:
-	$(DUNE) build @doc
+doc: doc/dune
+	$(DUNE) build @src/doc @doc/doc
 
 DOCDIR=_build/default/_doc/_html/
 
@@ -47,3 +47,4 @@ uninstall: jingoo.install
 
 clean:
 	$(DUNE) clean
+	rm -f tests/dune doc/dune

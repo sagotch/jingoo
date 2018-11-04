@@ -1,0 +1,6 @@
+<dl>
+  <dt>person.name</dt><dd>{{ person.name }}</dd>
+  <dt>person.age</dt><dd>{{ person.age }}</dd>
+  <dt>person["name"]</dt><dd>{{ person["name"] }}</dd>
+  <dt>person["age"]</dt><dd>{{ person["age"] }}</dd>
+</dl>
